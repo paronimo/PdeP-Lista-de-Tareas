@@ -1,9 +1,17 @@
 
 /*1)Instalar prompt-sync → npm install prompt-sync
   2)Compilar: tsc tareas.ts
-  3)Ejecutar: node tareas.js */
+  3)Ejecutar: node tareas.js
+  SOLO iniciar con npm start para compilar y ejecutar en un solo paso.
+   */
 
-//menu principal
+import promptSync from "prompt-sync";
+const prompt = promptSync({ sigint: true });
+
+import { crearTarea, listaTareas, cantidadTareas, mostrarResumen } from "./crear";
+import { verTareas } from "./Ver";
+import { buscarTarea } from "./buscar";
+import { editarTarea } from "./editar";
 function main(): void {
   let opc: number;
 

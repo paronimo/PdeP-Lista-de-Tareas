@@ -1,8 +1,12 @@
 {
   "compilerOptions": {
+    "resolveJsonModule": true,
     "target": "ES6",
     "module": "CommonJS",
     "outDir": "dist",
     "rootDir": "src",
-    "strict": true}
+    "strict": true,
+    "esModuleInterop": true
+  },
+  "exclude": ["bin/**/*"]
 }

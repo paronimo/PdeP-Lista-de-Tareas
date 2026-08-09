@@ -3,7 +3,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cantidadTareas = exports.listaTareas = void 0;
+exports.cantidadTareas = exports.listaTareas = exports.Tarea = void 0;
+exports.cargarDesdeArchivo = cargarDesdeArchivo;
 exports.crearTarea = crearTarea;
 exports.guardarEnArchivo = guardarEnArchivo;
 exports.darID = darID;
@@ -19,8 +20,120 @@ const fs_1 = __importDefault(require("fs"));
 const prompt = (0, prompt_sync_1.default)({ sigint: true });
 const MAX_TAREAS = 100;
 const ARCHIVO_JSON = 'tarea.json';
+class Tarea {
+    constructor() {
+        this._ID = "";
+        this._titulo = "";
+        this._descripcion = "";
+        this._dificultad = 1;
+        this._estado = "Pendiente";
+        this._preguntaFecha = 2;
+    }
+    static fromObject(obj) {
+        var _a, _b, _c, _d, _e, _f, _g, _h;
+        const tarea = new Tarea();
+        tarea.ID = (_b = (_a = obj.ID) !== null && _a !== void 0 ? _a : obj._ID) !== null && _b !== void 0 ? _b : "";
+        tarea.titulo = (_d = (_c = obj.titulo) !== null && _c !== void 0 ? _c : obj._titulo) !== null && _d !== void 0 ? _d : "";
+        tarea.descripcion = (_f = (_e = obj.descripcion) !== null && _e !== void 0 ? _e : obj._descripcion) !== null && _f !== void 0 ? _f : "";
+        tarea.dificultad = typeof obj.dificultad === "number" ? obj.dificultad : (typeof obj._dificultad === "number" ? obj._dificultad : 1);
+        tarea.estado = (_h = (_g = obj.estado) !== null && _g !== void 0 ? _g : obj._estado) !== null && _h !== void 0 ? _h : "Pendiente";
+        tarea.preguntaFecha = typeof obj.preguntaFecha === "number" ? obj.preguntaFecha : (typeof obj._preguntaFecha === "number" ? obj._preguntaFecha : 2);
+        tarea.dia = typeof obj.dia === "number" ? obj.dia : (typeof obj._dia === "number" ? obj._dia : undefined);
+        tarea.mes = typeof obj.mes === "number" ? obj.mes : (typeof obj._mes === "number" ? obj._mes : undefined);
+        tarea.anio = typeof obj.anio === "number" ? obj.anio : (typeof obj._anio === "number" ? obj._anio : undefined);
+        return tarea;
+    }
+    toJSON() {
+        return {
+            ID: this.ID,
+            titulo: this.titulo,
+            descripcion: this.descripcion,
+            dificultad: this.dificultad,
+            estado: this.estado,
+            preguntaFecha: this.preguntaFecha,
+            dia: this.dia,
+            mes: this.mes,
+            anio: this.anio,
+        };
+    }
+    get ID() {
+        return this._ID;
+    }
+    set ID(value) {
+        this._ID = value;
+    }
+    get titulo() {
+        return this._titulo;
+    }
+    set titulo(value) {
+        this._titulo = value;
+    }
+    get descripcion() {
+        return this._descripcion;
+    }
+    set descripcion(value) {
+        this._descripcion = value;
+    }
+    get dificultad() {
+        return this._dificultad;
+    }
+    set dificultad(value) {
+        this._dificultad = value;
+    }
+    get estado() {
+        return this._estado;
+    }
+    set estado(value) {
+        this._estado = value;
+    }
+    get preguntaFecha() {
+        return this._preguntaFecha;
+    }
+    set preguntaFecha(value) {
+        this._preguntaFecha = value;
+    }
+    get dia() {
+        return this._dia;
+    }
+    set dia(value) {
+        this._dia = value;
+    }
+    get mes() {
+        return this._mes;
+    }
+    set mes(value) {
+        this._mes = value;
+    }
+    get anio() {
+        return this._anio;
+    }
+    set anio(value) {
+        this._anio = value;
+    }
+}
+exports.Tarea = Tarea;
 exports.listaTareas = [];
 exports.cantidadTareas = 0;
+cargarDesdeArchivo();
+function cargarDesdeArchivo() {
+    try {
+        if (fs_1.default.existsSync(ARCHIVO_JSON)) {
+            const raw = fs_1.default.readFileSync(ARCHIVO_JSON, 'utf-8').trim();
+            if (raw.length > 0) {
+                const parsed = JSON.parse(raw);
+                if (Array.isArray(parsed)) {
+                    exports.listaTareas = parsed.map((item) => Tarea.fromObject(item));
+                    exports.cantidadTareas = exports.listaTareas.length;
+                }
+            }
+        }
+    }
+    catch (error) {
+        console.error("Error al cargar el archivo de tareas:", error);
+        exports.listaTareas = [];
+        exports.cantidadTareas = 0;
+    }
+}
 function crearTarea() {
     if (exports.cantidadTareas >= MAX_TAREAS) {
         console.log("No se pueden agregar más tareas.");
@@ -28,14 +141,7 @@ function crearTarea() {
     }
     console.clear();
     console.log("Creando una nueva tarea...\n");
-    let tarea = {
-        ID: "",
-        titulo: "",
-        descripcion: "",
-        dificultad: 1,
-        estado: "Pendiente",
-        preguntaFecha: 2
-    };
+    let tarea = new Tarea();
     darID(tarea);
     pedirTitulo(tarea);
     pedirDescripcion(tarea);

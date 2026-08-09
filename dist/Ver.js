@@ -10,10 +10,9 @@ const prompt_sync_1 = __importDefault(require("prompt-sync"));
 const prompt = (0, prompt_sync_1.default)({ sigint: true });
 function verTareas() {
     console.clear();
-    if (crear_1.cantidadTareas === 0) {
-        console.log("No hay tareas registradas.");
-        return;
-    }
+    crear_1.listaTareas.forEach((t, i) => {
+        console.log(`${i + 1}. [${t.ID}] ${t.titulo}`);
+    });
     let opcion;
     do {
         console.log("\n--- VER TAREAS ---");

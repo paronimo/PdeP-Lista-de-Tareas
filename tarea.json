@@ -1,8 +1,27 @@
-[
+ [
   {
     "ID": "3cde57",
     "titulo": "queeeee",
     "descripcion": "sooooooo",
+    "dificultad": 2,
+    "estado": "En curso",
+    "preguntaFecha": 2
+  },
+  {
+    "ID": "944b5d",
+    "titulo": "queeeeeeee",
+    "descripcion": "sooooooooooo",
+    "dificultad": 2,
+    "estado": "Terminada",
+    "preguntaFecha": 1,
+    "dia": 1,
+    "mes": 2,
+    "anio": 2026
+  },
+  {
+    "ID": "ad1770",
+    "titulo": "jefhrrbgbyhrbvr",
+    "descripcion": "rehjugrbeu",
     "dificultad": 2,
     "estado": "En curso",
     "preguntaFecha": 2

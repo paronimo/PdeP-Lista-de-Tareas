@@ -14,11 +14,12 @@ const crear_1 = require("./crear");
 const Ver_1 = require("./Ver");
 const buscar_1 = require("./buscar");
 const editar_1 = require("./editar");
+const eliminarS_1 = require("./eliminarS");
 function main() {
     let opc;
     do {
         console.log("\n--- MENÚ PRINCIPAL ---");
-        console.log("0. Salir\n1. Crear tarea\n2. Ver tareas\n3. Buscar tarea\n4. Editar tarea");
+        console.log("0. Salir\n1. Crear tarea\n2. Ver tareas\n3. Buscar tarea\n4. Editar tarea\n5. Eliminar la tarea");
         opc = parseInt(prompt("Seleccione una opción: "));
         switch (opc) {
             case 0:
@@ -35,6 +36,9 @@ function main() {
                 break;
             case 4:
                 (0, editar_1.editarTarea)();
+                break;
+            case 5:
+                (0, eliminarS_1.eliminar)();
                 break;
             default: console.log("Opción inválida.");
         }

@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import promptSync from "prompt-sync";
 import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs';
@@ -6,20 +7,150 @@ const prompt = promptSync({ sigint: true });
 const MAX_TAREAS: number = 100;
 const ARCHIVO_JSON = 'tarea.json';
 
-export interface Tarea {
-    ID: string;
-    titulo: string;
-    descripcion: string;
-    dificultad: number;
-    estado: string;
-    preguntaFecha: number;
-    dia?: number;
-    mes?: number;
-    anio?: number;
+export class Tarea {
+    private _ID: string;
+    private _titulo: string;
+    private _descripcion: string;
+    private _dificultad: number;
+    private _estado: string;
+    private _preguntaFecha: number;
+    private _dia?: number;
+    private _mes?: number;
+    private _anio?: number;
+
+    constructor() {
+        this._ID = "";
+        this._titulo = "";
+        this._descripcion = "";
+        this._dificultad = 1;
+        this._estado = "Pendiente";
+        this._preguntaFecha = 2;
+    }
+
+    static fromObject(obj: any): Tarea {
+        const tarea = new Tarea();
+        tarea.ID = obj.ID ?? obj._ID ?? "";
+        tarea.titulo = obj.titulo ?? obj._titulo ?? "";
+        tarea.descripcion = obj.descripcion ?? obj._descripcion ?? "";
+        tarea.dificultad = typeof obj.dificultad === "number" ? obj.dificultad : (typeof obj._dificultad === "number" ? obj._dificultad : 1);
+        tarea.estado = obj.estado ?? obj._estado ?? "Pendiente";
+        tarea.preguntaFecha = typeof obj.preguntaFecha === "number" ? obj.preguntaFecha : (typeof obj._preguntaFecha === "number" ? obj._preguntaFecha : 2);
+        tarea.dia = typeof obj.dia === "number" ? obj.dia : (typeof obj._dia === "number" ? obj._dia : undefined);
+        tarea.mes = typeof obj.mes === "number" ? obj.mes : (typeof obj._mes === "number" ? obj._mes : undefined);
+        tarea.anio = typeof obj.anio === "number" ? obj.anio : (typeof obj._anio === "number" ? obj._anio : undefined);
+        return tarea;
+    }
+
+    toJSON(): object {
+        return {
+            ID: this.ID,
+            titulo: this.titulo,
+            descripcion: this.descripcion,
+            dificultad: this.dificultad,
+            estado: this.estado,
+            preguntaFecha: this.preguntaFecha,
+            dia: this.dia,
+            mes: this.mes,
+            anio: this.anio,
+        };
+    }
+
+    get ID(): string {
+        return this._ID;
+    }
+
+    set ID(value: string) {
+        this._ID = value;
+    }
+
+    get titulo(): string {
+        return this._titulo;
+    }
+
+    set titulo(value: string) {
+        this._titulo = value;
+    }
+
+    get descripcion(): string {
+        return this._descripcion;
+    }
+
+    set descripcion(value: string) {
+        this._descripcion = value;
+    }
+
+    get dificultad(): number {
+        return this._dificultad;
+    }
+
+    set dificultad(value: number) {
+        this._dificultad = value;
+    }
+
+    get estado(): string {
+        return this._estado;
+    }
+
+    set estado(value: string) {
+        this._estado = value;
+    }
+
+    get preguntaFecha(): number {
+        return this._preguntaFecha;
+    }
+
+    set preguntaFecha(value: number) {
+        this._preguntaFecha = value;
+    }
+
+    get dia(): number | undefined {
+        return this._dia;
+    }
+
+    set dia(value: number | undefined) {
+        this._dia = value;
+    }
+
+    get mes(): number | undefined {
+        return this._mes;
+    }
+
+    set mes(value: number | undefined) {
+        this._mes = value;
+    }
+
+    get anio(): number | undefined {
+        return this._anio;
+    }
+
+    set anio(value: number | undefined) {
+        this._anio = value;
+    }
 }
 
 export let listaTareas: Tarea[] = [];
 export let cantidadTareas: number = 0;
+
+cargarDesdeArchivo();
+
+export function cargarDesdeArchivo(): void {
+    try {
+        if (fs.existsSync(ARCHIVO_JSON)) {
+            const raw = fs.readFileSync(ARCHIVO_JSON, 'utf-8').trim();
+            if (raw.length > 0) {
+                const parsed = JSON.parse(raw);
+                if (Array.isArray(parsed)) {
+                    listaTareas = parsed.map((item: any) => Tarea.fromObject(item));
+                    cantidadTareas = listaTareas.length;
+                }
+            }
+        }
+    } catch (error) {
+        console.error("Error al cargar el archivo de tareas:", error);
+        listaTareas = [];
+        cantidadTareas = 0;
+    }
+}
 
 export function crearTarea(): void {
     if (cantidadTareas >= MAX_TAREAS) {
@@ -30,14 +161,7 @@ export function crearTarea(): void {
     console.clear();
     console.log("Creando una nueva tarea...\n");
 
-    let tarea: Tarea = {
-    ID: "",
-    titulo: "",
-    descripcion: "",
-    dificultad: 1,
-    estado: "Pendiente",
-    preguntaFecha: 2
-    };
+    let tarea: Tarea = new Tarea();
 
 darID(tarea);
 pedirTitulo(tarea);

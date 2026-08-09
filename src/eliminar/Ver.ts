@@ -1,14 +1,13 @@
-import { listaTareas, cantidadTareas, mostrarResumen } from "./crear";
+import { listaTareas, cantidadTareas, mostrarResumen } from "../crear";
 import promptSync from "prompt-sync";
 const prompt = promptSync({ sigint: true });
 
 export function verTareas(): void {
 console.clear();
 
-if (cantidadTareas === 0) {
-    console.log("No hay tareas registradas.");
-    return;
-}
+listaTareas.forEach((t, i) => {
+        console.log(`${i + 1}. [${t.ID}] ${t.titulo}`);
+    });
 let opcion: number;
 do {
     console.log("\n--- VER TAREAS ---");

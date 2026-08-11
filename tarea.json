@@ -1,4 +1,4 @@
- [
+[
   {
     "ID": "3cde57",
     "titulo": "queeeee",
@@ -24,6 +24,22 @@
     "descripcion": "rehjugrbeu",
     "dificultad": 2,
     "estado": "En curso",
+    "preguntaFecha": 2
+  },
+  {
+    "ID": "66ada2",
+    "titulo": "Holaaa",
+    "descripcion": "queee",
+    "dificultad": 4,
+    "estado": "En curso",
+    "preguntaFecha": 2
+  },
+  {
+    "ID": "ebeb18",
+    "titulo": "siii",
+    "descripcion": "noooooo",
+    "dificultad": 1,
+    "estado": "Terminada",
     "preguntaFecha": 2
   }
 ]

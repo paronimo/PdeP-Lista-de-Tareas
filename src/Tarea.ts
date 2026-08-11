@@ -24,7 +24,7 @@ function main(): void {
     switch (opc) {
       case 0: console.log("¡Hasta luego!"); break;
       case 1: crearTarea(); break;
-    //  case 2: buscarfiltro(); break; 
+      case 2: buscarfiltro(); break;
       case 3: buscarTarea(); break;
       case 4: editarTarea(); break;
       case 5: eliminar(); break;

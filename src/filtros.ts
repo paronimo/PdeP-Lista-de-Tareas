@@ -7,13 +7,12 @@ export function buscarfiltro(): void {
     console.log("\n--- FILTRAR TAREA ---");
     let opc: number;
     do{
-    console.log("0. volver\n1. Por Estado\n2. Por Fecha\n3. Por Dificultad");
+    console.log("0. volver\n1. Por Estado\n2. Por Dificultad");
     opc = parseInt(prompt("Seleccione una opción: "));
 
     switch (opc) {
       case 0: console.log("¡Hasta luego!"); break;
       case 1: FilEstado(); break;
-      //case 2: FilFecha(); break;
       case 2: FilDificultad(); break;
       default: console.log("Opción inválida.");
     } 

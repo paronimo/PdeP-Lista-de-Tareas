@@ -14,6 +14,7 @@ exports.pedirDificultad = pedirDificultad;
 exports.pedirEstado = pedirEstado;
 exports.pedirFechaVencimiento = pedirFechaVencimiento;
 exports.mostrarResumen = mostrarResumen;
+/// <reference types="node" />
 const prompt_sync_1 = __importDefault(require("prompt-sync"));
 const uuid_1 = require("uuid");
 const fs_1 = __importDefault(require("fs"));

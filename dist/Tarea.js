@@ -11,7 +11,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const prompt_sync_1 = __importDefault(require("prompt-sync"));
 const prompt = (0, prompt_sync_1.default)({ sigint: true });
 const crear_1 = require("./crear");
-const Ver_1 = require("./Ver");
+const filtros_1 = require("./filtros");
 const buscar_1 = require("./buscar");
 const editar_1 = require("./editar");
 const eliminarS_1 = require("./eliminarS");
@@ -19,7 +19,7 @@ function main() {
     let opc;
     do {
         console.log("\n--- MENÚ PRINCIPAL ---");
-        console.log("0. Salir\n1. Crear tarea\n2. Ver tareas\n3. Buscar tarea\n4. Editar tarea\n5. Eliminar la tarea");
+        console.log("0. Salir\n1. Crear tarea\n2. Filtrar tareas\n3. Buscar tarea\n4. Editar tarea\n5. Eliminar la tarea");
         opc = parseInt(prompt("Seleccione una opción: "));
         switch (opc) {
             case 0:
@@ -29,7 +29,7 @@ function main() {
                 (0, crear_1.crearTarea)();
                 break;
             case 2:
-                (0, Ver_1.verTareas)();
+                (0, filtros_1.buscarfiltro)();
                 break;
             case 3:
                 (0, buscar_1.buscarTarea)();

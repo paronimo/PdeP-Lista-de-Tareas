@@ -1,27 +1,31 @@
-import { listaTareas, cantidadTareas, mostrarResumen } from "./crear";
 import promptSync from "prompt-sync";
+import { TareaService } from "./services/TareaService";
+import { mostrarResumen } from "./crear";
+
 const prompt = promptSync({ sigint: true });
 
-export function buscarTarea(): void {
-    console.clear();
+export function buscarTarea(service: TareaService): void {
+  console.clear();
 
-    if (cantidadTareas === 0) {
+  const tareas = service.getAll();
+  if (tareas.length === 0) {
     console.log("No hay tareas registradas.");
     return;
-}
+  }
 
-    console.log("\n--- BUSCAR TAREA ---");
-    for (let i = 0; i < cantidadTareas; i++) {
-    console.log(`${i + 1}. ${listaTareas[i].titulo}`);
-}
+  console.log("\n--- BUSCAR TAREA ---");
+  tareas.forEach((tarea, index) => {
+    console.log(`${index + 1}. ${tarea.titulo}`);
+  });
 
-    const seleccion = parseInt(prompt("Seleccione el ID de tarea (0 para volver): "));
+  const seleccion = parseInt(prompt("Seleccione el ID de tarea (0 para volver): "));
 
-    if (seleccion > 0 && seleccion <= cantidadTareas) {
+  if (seleccion > 0 && seleccion <= tareas.length) {
     console.clear();
-    mostrarResumen(listaTareas[seleccion - 1]);
-    } else if (seleccion !== 0) {
+    mostrarResumen(tareas[seleccion - 1]);
+  } else if (seleccion !== 0) {
     console.log("Número inválido.");
-    }
-    prompt("ENTER para continuar...");
+  }
+
+  prompt("ENTER para continuar...");
 }

@@ -4,10 +4,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.buscarfiltro = buscarfiltro;
-const crear_1 = require("./crear");
 const prompt_sync_1 = __importDefault(require("prompt-sync"));
+const crear_1 = require("./crear");
 const prompt = (0, prompt_sync_1.default)({ sigint: true });
-function buscarfiltro() {
+function buscarfiltro(service) {
     console.clear();
     console.log("\n--- FILTRAR TAREA ---");
     let opc;
@@ -16,71 +16,63 @@ function buscarfiltro() {
         opc = parseInt(prompt("Seleccione una opción: "));
         switch (opc) {
             case 0:
-                console.log("¡Hasta luego!");
                 break;
             case 1:
-                FilEstado();
+                FilEstado(service);
                 break;
             case 2:
-                FilDificultad();
+                FilDificultad(service);
                 break;
-            default: console.log("Opción inválida.");
+            default:
+                console.log("Opción inválida.");
         }
     } while (opc !== 0);
 }
-function FilEstado() {
+function FilEstado(service) {
     console.clear();
-    if (crear_1.cantidadTareas === 0) {
-        console.log("No hay tareas registradas.");
+    const estado = prompt("Ingrese el estado a filtrar: ").trim();
+    const estadoNormalizado = normalizarEstado(estado);
+    if (!estadoNormalizado) {
+        console.log("Estado inválido.");
         return;
     }
-    const estado = prompt("Ingrese el estado a filtrar: ");
-    const tareasFiltradas = crear_1.listaTareas.filter(tarea => tarea.estado.toLowerCase() === estado.toLowerCase());
+    const tareasFiltradas = service.filterByStatus(estadoNormalizado);
     if (tareasFiltradas.length === 0) {
         console.log("No se encontraron tareas con ese estado.");
-    }
-    else {
-        console.log(`\n--- TAREAS CON ESTADO "${estado}" ---`);
-        tareasFiltradas.forEach((tarea, index) => {
-            console.log(`${index + 1}. ${tarea.titulo}`);
-        });
-    }
-}
-/* function FilFecha(): void {
-     console.clear();
-     if (cantidadTareas === 0) {
-         console.log("No hay tareas registradas.");
-         return;
-     }
-     const fecha = prompt("Ingrese la fecha a filtrar (YYYY-MM-DD): ");
-     const tareasFiltradas = listaTareas.filter(tarea => tarea.fecha === fecha);
-     if (tareasFiltradas.length === 0) {
-         console.log("No se encontraron tareas con esa fecha.");
-     } else {
-         console.log(`\n--- TAREAS CON FECHA "${fecha}" ---`);
-         tareasFiltradas.forEach((tarea, index) => {
-             console.log(`${index + 1}. ${tarea.titulo}`);
-         });
-     }
- } */
-function FilDificultad() {
-    console.clear();
-    if (crear_1.cantidadTareas === 0) {
-        console.log("No hay tareas registradas.");
         return;
     }
-    const dificultad = prompt("Ingrese la dificultad a filtrar: ");
-    const dificultadBuscada = parseInt(dificultad);
-    const tareasFiltradas = crear_1.listaTareas.filter(tarea => tarea.dificultad === dificultadBuscada);
+    console.log(`\n--- TAREAS CON ESTADO "${estadoNormalizado}" ---`);
+    tareasFiltradas.forEach((tarea, index) => {
+        console.log(`${index + 1}. ${tarea.titulo}`);
+        (0, crear_1.mostrarResumen)(tarea);
+    });
+}
+function FilDificultad(service) {
+    console.clear();
+    const dificultad = parseInt(prompt("Ingrese la dificultad a filtrar: "));
+    if (Number.isNaN(dificultad) || dificultad < 1 || dificultad > 5) {
+        console.log("Dificultad inválida.");
+        return;
+    }
+    const tareasFiltradas = service.filterByDifficulty(dificultad);
     if (tareasFiltradas.length === 0) {
         console.log("No se encontraron tareas con esa dificultad.");
+        return;
     }
-    else {
-        // Mapa para mostrar el nombre según el número
-        const nombres = ["", "Facilísimo", "Fácil", "Medio", "Complicado", "Difícilísimo"];
-        console.log(`\n--- TAREAS CON DIFICULTAD: ${nombres[dificultadBuscada]} (${dificultadBuscada}) ---`);
-        tareasFiltradas.forEach((tarea, index) => {
-            console.log(`${index + 1}. ${tarea.titulo}`);
-        });
-    }
+    const nombres = ["", "Facilísimo", "Fácil", "Medio", "Complicado", "Difícilísimo"];
+    console.log(`\n--- TAREAS CON DIFICULTAD: ${nombres[dificultad]} (${dificultad}) ---`);
+    tareasFiltradas.forEach((tarea, index) => {
+        console.log(`${index + 1}. ${tarea.titulo}`);
+        (0, crear_1.mostrarResumen)(tarea);
+    });
+}
+function normalizarEstado(estado) {
+    const estadoLower = estado.toLowerCase();
+    if (estadoLower === "pendiente")
+        return "Pendiente";
+    if (estadoLower === "en curso" || estadoLower === "encurso")
+        return "En curso";
+    if (estadoLower === "terminada" || estadoLower === "terminado")
+        return "Terminada";
+    return null;
 }

@@ -1,49 +1,44 @@
-// Asegúrate de importar 'guardarEnArchivo' y asignar de nuevo la lista
-import { listaTareas, mostrarResumen, guardarEnArchivo } from "./crear";
 import promptSync from "prompt-sync";
+import { TareaService } from "./services/TareaService";
+import { mostrarResumen } from "./crear";
 
 const prompt = promptSync({ sigint: true });
 
-export function eliminar(): void {
+export function eliminar(service: TareaService): void {
+  console.clear();
+
+  const tareas = service.getAll();
+  if (tareas.length === 0) {
+    console.log("No hay tareas para eliminar.");
+    prompt("Presione ENTER para volver...");
+    return;
+  }
+
+  console.log("\n--- ELIMINAR TAREA ---");
+  tareas.forEach((tarea, index) => {
+    console.log(`${index + 1}. [${tarea.id}] ${tarea.titulo}`);
+  });
+
+  const seleccion = parseInt(prompt("\nSeleccione el número de tarea a eliminar (0 para cancelar): "));
+
+  if (seleccion > 0 && seleccion <= tareas.length) {
+    const indice = seleccion - 1;
+    const tarea = tareas[indice];
+
     console.clear();
+    console.log("Vas a eliminar la siguiente tarea:");
+    mostrarResumen(tarea);
 
-    if (listaTareas.length === 0) {
-        console.log("No hay tareas para eliminar.");
-        prompt("Presione ENTER para volver...");
-        return;
+    const confirmacion = prompt("¿Estás seguro? (SI/NO): ").toUpperCase();
+    if (confirmacion === "SI") {
+      service.deleteTask(tarea.id);
+      console.log("\n¡Tarea eliminada con éxito!");
+    } else {
+      console.log("\nOperación cancelada.");
     }
+  } else if (seleccion !== 0) {
+    console.log("Selección inválida.");
+  }
 
-    console.log("\n--- ELIMINAR TAREA ---");
-    // Mostramos la lista con índices para que el usuario elija
-    listaTareas.forEach((t, i) => {
-        console.log(`${i + 1}. [${t.ID}] ${t.titulo}`);
-    });
-
-    const seleccion = parseInt(prompt("\nSeleccione el número de tarea a eliminar (0 para cancelar): "));
-
-    if (seleccion > 0 && seleccion <= listaTareas.length) {
-        const indice = seleccion - 1;
-        
-        console.clear();
-        console.log("Vas a eliminar la siguiente tarea:");
-        mostrarResumen(listaTareas[indice]);
-
-        const confirmacion = prompt("¿Estás seguro? (SI/NO): ").toUpperCase();
-
-        if (confirmacion === "SI") {
-            // ELIMINACIÓN REAL: Borra 1 elemento en la posición 'indice'
-            listaTareas.splice(indice, 1); 
-            
-            // ACTUALIZACIÓN DE PERSISTENCIA
-            guardarEnArchivo(); 
-            
-            console.log("\n¡Tarea eliminada con éxito!");
-        } else {
-            console.log("\nOperación cancelada.");
-        }
-    } else if (seleccion !== 0) {
-        console.log("Selección inválida.");
-    }
-
-    prompt("\nPresione ENTER para continuar...");
+  prompt("\nPresione ENTER para continuar...");
 }

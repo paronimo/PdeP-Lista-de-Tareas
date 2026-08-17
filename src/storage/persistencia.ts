@@ -10,6 +10,14 @@ export const guardarTareasJSON = (ruta: string, tareas: readonly Tarea[]): boole
     return false;
   }
 };
+/*export function guardarEnArchivo(): void {
+    try {
+        const data = JSON.stringify(listaTareas, null, 2); // Convierte el array a texto bonito
+        fs.writeFileSync(ARCHIVO_JSON, data, 'utf-8');
+    } catch (error) {
+        console.error("Error al guardar el archivo:", error);
+    }
+}*/
 
 export const cargarTareasJSON = (ruta: string): Tarea[] => {
   try {

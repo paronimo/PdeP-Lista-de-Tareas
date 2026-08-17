@@ -79,14 +79,7 @@ mostrarResumen(tarea);
     console.log("\nTarea cancelada.");
     }
 }
-export function guardarEnArchivo(): void {
-    try {
-        const data = JSON.stringify(listaTareas, null, 2); // Convierte el array a texto bonito
-        fs.writeFileSync(ARCHIVO_JSON, data, 'utf-8');
-    } catch (error) {
-        console.error("Error al guardar el archivo:", error);
-    }
-}
+
 
 export function darID(t: Tarea): void {
     // Validar que el objeto no tenga ID previamente

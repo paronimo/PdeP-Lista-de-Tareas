@@ -5,7 +5,11 @@ export class TareaService {
   private tasks: Tarea[];
   private readonly maxTasks: number;
 
-  //explicacion:
+  //explicacion: El constructor de la clase TareaService recibe un objeto que implementa la interfaz TareaRepository y 
+  // un número máximo de tareas (maxTasks) como parámetros. Inicializa la propiedad repository con el repositorio
+  //  proporcionado, establece el límite máximo de tareas y carga las tareas existentes desde el repositorio llamando al 
+  // método load(). Esto permite que la clase TareaService gestione las tareas utilizando el almacenamiento definido por
+  //  el repositorio.
   constructor(repository: TareaRepository, maxTasks = 100) {
     this.repository = repository;
     this.maxTasks = maxTasks;

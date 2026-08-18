@@ -20,6 +20,12 @@ class JsonTareaRepository {
             if (raw.length === 0) {
                 return [];
             }
+            //explicacion: Esta función load() intenta cargar las tareas desde un archivo JSON en el disco. Primero, 
+            // verifica si el archivo existe; si no, devuelve un array vacío. Luego, lee el contenido del archivo y lo convierte en 
+            // una cadena de texto. Si la cadena está vacía, también devuelve un array vacío. A continuación, intenta analizar la 
+            // cadena JSON en un objeto JavaScript. Si el objeto resultante no es un array, devuelve un array vacío. Finalmente, 
+            // mapea cada elemento del array a una instancia de la clase Tarea utilizando el método estático fromObject() y devuelve 
+            // el array de tareas.
             const parsed = JSON.parse(raw);
             if (!Array.isArray(parsed)) {
                 return [];

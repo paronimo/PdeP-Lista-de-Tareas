@@ -21,6 +21,13 @@ class Tarea {
             : obj._estado === "Pendiente" || obj._estado === "En curso" || obj._estado === "Terminada"
                 ? obj._estado
                 : "Pendiente";
+        //explicacion: Esta función estática fromObject toma un objeto genérico como argumento y crea una nueva instancia 
+        // de la clase Tarea a partir de las propiedades del objeto. Primero, verifica si el objeto tiene una propiedad 
+        // createdAt y, si es así, la convierte en un objeto Date; de lo contrario, establece la fecha de creación como la 
+        // fecha actual. Luego, hace lo mismo para la propiedad dueDate. Para el estado de la tarea, verifica si el objeto 
+        // tiene una propiedad estado válida ("Pendiente", "En curso" o "Terminada") y, si no, intenta usar una propiedad 
+        // alternativa _estado. Si ninguna de estas propiedades es válida, establece el estado predeterminado como
+        //  "Pendiente". Finalmente, devuelve una nueva instancia de Tarea con las propiedades extraídas del objeto.
         return new Tarea({
             id: (_b = (_a = obj.id) !== null && _a !== void 0 ? _a : obj.ID) !== null && _b !== void 0 ? _b : "",
             titulo: (_d = (_c = obj.titulo) !== null && _c !== void 0 ? _c : obj._titulo) !== null && _d !== void 0 ? _d : "",
